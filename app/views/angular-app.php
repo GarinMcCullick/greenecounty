@@ -1,14 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>User Form SPA</title>
-    <link rel="stylesheet" href="/greenecounty/public/angular/styles.ef46db3751d8e999.css">
-</head>
-<body>
-    <app-root></app-root>
+<?php
 
-    <script src="/greenecounty/public/angular/runtime.7400d55e80d7467f.js" type="module"></script>
-    <script src="/greenecounty/public/angular/main.48442af322701ebe.js" type="module"></script>
-</body>
-</html>
+// This is just to better illustrate MVC design pattern, I know all we are doing is importing index.html
+// but to better outline the proper flow and separation of concerns this is what I have done for the interview.
+
+$indexFile = __DIR__ . '/../../public/angular/index.html';
+
+if (file_exists($indexFile)) {
+    $html = file_get_contents($indexFile);
+
+    // Adjust <base href> so Angular looks for scripts and styles in the correct folder
+    // Replace '/' with the actual path relative to the Apache root
+    $html = str_replace('<base href="/">', '<base href="/greenecounty/public/angular/">', $html);
+
+    echo $html;
+} else {
+    echo "<h1>Angular build not found. Run ng build --configuration production</h1>";
+}

@@ -1,30 +1,70 @@
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label>First Name:</label>
-    <input type="text" formControlName="firstName" required />
-  </div>
+<div class="form-container">
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <!-- First Name -->
+    <label>First Name</label>
+    <input formControlName="firstName" placeholder="First Name" maxlength="60" />
+    <div
+      *ngIf="userForm.get('firstName')?.touched && userForm.get('firstName')?.invalid"
+      class="error"
+    >
+      First name is required.
+    </div>
 
-  <div>
-    <label>Last Name:</label>
-    <input type="text" formControlName="lastName" required />
-  </div>
+    <!-- Last Name -->
+    <label>Last Name</label>
+    <input formControlName="lastName" placeholder="Last Name" maxlength="60" />
+    <div
+      *ngIf="userForm.get('lastName')?.touched && userForm.get('lastName')?.invalid"
+      class="error"
+    >
+      Last name is required.
+    </div>
 
-  <div>
-    <label>Email:</label>
-    <input type="email" formControlName="email" required />
-  </div>
+    <!-- Email -->
+    <label>Email</label>
+    <input formControlName="email" type="email" placeholder="Email" maxlength="60" />
+    <div *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid" class="error">
+      <div *ngIf="userForm.get('email')?.errors?.['required']">Email is required.</div>
+      <div *ngIf="userForm.get('email')?.errors?.['email']">Email must be valid.</div>
+    </div>
 
-  <div>
-    <label>Account Number (12 alphanumeric):</label>
-    <input type="text" formControlName="accountNumber" maxlength="12" required />
-  </div>
+    <!-- Account Number -->
+    <label>Account Number</label>
+    <input formControlName="accountNumber" placeholder="12-character alphanumeric" maxlength="12" />
+    <div
+      *ngIf="userForm.get('accountNumber')?.touched && userForm.get('accountNumber')?.invalid"
+      class="error"
+    >
+      <div *ngIf="userForm.get('accountNumber')?.errors?.['required']">
+        Account number is required.
+      </div>
+      <div *ngIf="userForm.get('accountNumber')?.errors?.['pattern']">
+        Account number must be exactly 12 letters or numbers (no symbols).
+      </div>
+    </div>
 
-  <div>
-    <label>Year:</label>
-    <select formControlName="year" required>
+    <!-- Year -->
+    <label>Year</label>
+    <select formControlName="year">
+      <option value="" disabled>Select Year</option>
       <option *ngFor="let y of years" [value]="y">{{ y }}</option>
     </select>
-  </div>
+    <div *ngIf="userForm.get('year')?.touched && userForm.get('year')?.invalid" class="error">
+      Please select a year.
+    </div>
 
-  <button type="submit">Submit</button>
-</form>
+    <!-- Main Submit button -->
+    <button type="submit" [disabled]="userForm.invalid">Submit</button>
+  </form>
+
+  <!-- Confirmation modal / section -->
+  <div *ngIf="confirmDialogVisible" class="modal">
+    <p>I verify the information provided is accurate.</p>
+    <label>
+      <input type="checkbox" [(ngModel)]="confirmChecked" />
+      I confirm
+    </label>
+    <button [disabled]="!confirmChecked" (click)="confirmSubmission()">Yes, Submit</button>
+    <button (click)="cancelSubmission()">Cancel</button>
+  </div>
+</div>

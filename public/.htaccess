@@ -1,5 +1,10 @@
 RewriteEngine On
-RewriteBase /greenecounty/public/
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+
+# Serve existing files directly
+
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Everything else → index.php
+
 RewriteRule ^ index.php [L]

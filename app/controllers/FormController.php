@@ -1,6 +1,12 @@
 <?php
+//example api response
+
 class FormController {
     public function index() {
-        include __DIR__ . '/../views/angular-app.php';
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'ok',
+            'message' => 'FormController working',
+        ]);
     }
 }
